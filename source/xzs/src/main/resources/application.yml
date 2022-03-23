@@ -1,5 +1,7 @@
 server:
   port: 8000
+  profiles:
+      active: prod
   undertow:
     io-threads: 16
     worker-threads: 4000

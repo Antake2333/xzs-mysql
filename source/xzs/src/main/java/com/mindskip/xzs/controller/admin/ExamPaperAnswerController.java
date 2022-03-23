@@ -1,19 +1,24 @@
 package com.mindskip.xzs.controller.admin;
 
+import com.github.pagehelper.PageInfo;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.User;
-import com.mindskip.xzs.service.*;
+import com.mindskip.xzs.service.ExamPaperAnswerService;
+import com.mindskip.xzs.service.SubjectService;
+import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.PageInfoHelper;
-import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
 import com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM;
-import com.github.pagehelper.PageInfo;
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController("AdminExamPaperAnswerController")
 @RequestMapping(value = "/api/admin/examPaperAnswer")
@@ -41,10 +46,10 @@ public class ExamPaperAnswerController extends BaseApiController {
             vm.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
             vm.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));
             vm.setPaperScore(ExamUtil.scoreToVM(e.getPaperScore()));
-            vm.setSubjectName(subject.getName());
+            vm.setSubjectName(subject == null ? "" : subject.getName());
             vm.setCreateTime(DateTimeUtil.dateFormat(e.getCreateTime()));
             User user = userService.selectById(e.getCreateUser());
-            vm.setUserName(user.getUserName());
+            vm.setUserName(user == null ? "" : user.getUserName());
             return vm;
         });
         return RestResponse.ok(page);
